@@ -1,130 +1,198 @@
 import streamlit as st
 import pandas as pd
 import joblib
-import numpy as np
 
-# ----------------------------
-# Load trained model
-# ----------------------------
-model = joblib.load("sales_prediction_model.pkl")
+# -----------------------------
+# Page Configuration
+# -----------------------------
+st.set_page_config(
+    page_title="Financial Sales Intelligence Platform",
+    page_icon="📊",
+    layout="centered"
+)
 
-# ----------------------------
-# App Title
-# ----------------------------
-st.set_page_config(page_title="Financial Sales Intelligence Platform")
+# -----------------------------
+# Load Model
+# -----------------------------
+@st.cache_resource
+def load_model():
+    return joblib.load("sales_prediction_model.pkl")
 
+model = load_model()
+
+# -----------------------------
+# Header
+# -----------------------------
 st.title("📊 Financial Sales Intelligence Platform")
 st.subheader("AI Sales Prediction System")
 
-st.write("Enter the sales information below and click **Predict Sales**.")
-
-# ----------------------------
-# User Inputs
-# ----------------------------
-
-segment = st.selectbox(
-    "Segment",
-    [
-        "Channel Partners",
-        "Enterprise",
-        "Government",
-        "Midmarket",
-        "Small Business"
-    ]
+st.write(
+    "Use the trained Random Forest model to predict expected sales "
+    "based on product, market, pricing, and sales factors."
 )
 
-country = st.selectbox(
-    "Country",
-    [
-        "Canada",
-        "France",
-        "Germany",
-        "Mexico",
-        "United States of America"
-    ]
-)
+st.divider()
 
-product = st.selectbox(
-    "Product",
-    [
-        "Amarilla",
-        "Carretera",
-        "Montana",
-        "Paseo",
-        "VTT",
-        "Velo"
-    ]
-)
+# -----------------------------
+# Input Features
+# -----------------------------
 
-discount = st.selectbox(
-    "Discount Band",
-    [
-        "No Discount",
-        "Low",
-        "Medium",
-        "High"
-    ]
-)
+st.subheader("Enter Sales Information")
 
-units = st.number_input(
-    "Units Sold",
-    min_value=0.0,
-    value=100.0
-)
+col1, col2 = st.columns(2)
 
-manufacturing = st.number_input(
-    "Manufacturing Price",
-    min_value=0.0,
-    value=10.0
-)
+with col1:
 
-sale_price = st.number_input(
-    "Sale Price",
-    min_value=0.0,
-    value=20.0
-)
+    segment = st.selectbox(
+        "Segment",
+        [
+            "Channel Partners",
+            "Enterprise",
+            "Government",
+            "Midmarket",
+            "Small Business"
+        ]
+    )
 
-month = st.number_input(
-    "Month Number",
-    min_value=1,
-    max_value=12,
-    value=1
-)
+    country = st.selectbox(
+        "Country",
+        [
+            "Canada",
+            "France",
+            "Germany",
+            "Mexico",
+            "United States of America"
+        ]
+    )
 
-year = st.number_input(
-    "Year",
-    min_value=2013,
-    max_value=2035,
-    value=2014
-)
+    product = st.selectbox(
+        "Product",
+        [
+            "Amarilla",
+            "Carretera",
+            "Montana",
+            "Paseo",
+            "VTT",
+            "Velo"
+        ]
+    )
 
-# Convert No Discount back to NaN
-if discount == "No Discount":
-    discount = np.nan
+    discount = st.selectbox(
+        "Discount Band",
+        [
+            "None",
+            "Low",
+            "Medium",
+            "High"
+        ]
+    )
 
-# ----------------------------
+
+with col2:
+
+    units_sold = st.number_input(
+        "Units Sold",
+        min_value=0,
+        value=100
+    )
+
+    manufacturing_price = st.number_input(
+        "Manufacturing Price",
+        min_value=0.0,
+        value=10.0
+    )
+
+    sale_price = st.number_input(
+        "Sale Price",
+        min_value=0.0,
+        value=20.0
+    )
+
+    month_number = st.number_input(
+        "Month Number",
+        min_value=1,
+        max_value=12,
+        value=1
+    )
+
+    year = st.number_input(
+        "Year",
+        min_value=2013,
+        max_value=2035,
+        value=2014
+    )
+
+
+# -----------------------------
 # Prediction
-# ----------------------------
+# -----------------------------
 
-if st.button("Predict Sales"):
+st.divider()
 
-    input_df = pd.DataFrame({
-        "Segment": [segment],
-        "Country": [country],
-        "Product": [product],
-        "Discount Band": [discount],
-        "Units Sold": [units],
-        "Manufacturing Price": [manufacturing],
-        "Sale Price": [sale_price],
-        "Month Number": [month],
-        "Year": [year]
-    })
+if st.button("🚀 Predict Sales"):
 
-    prediction = model.predict(input_df)
+    input_data = pd.DataFrame(
+        {
+            "Segment": [segment],
+            "Country": [country],
+            "Product": [product],
+            "Discount Band": [discount],
+            "Units Sold": [units_sold],
+            "Manufacturing Price": [manufacturing_price],
+            "Sale Price": [sale_price],
+            "Month Number": [month_number],
+            "Year": [year]
+        }
+    )
 
-    st.success("Prediction Completed!")
 
+    try:
+
+        prediction = model.predict(input_data)
+
+        predicted_sales = prediction[0]
+
+
+        st.success("Prediction Completed Successfully!")
+
+        st.metric(
+            label="Predicted Sales",
+            value=f"${predicted_sales:,.2f}"
+        )
+
+
+    except Exception as e:
+
+        st.error("Prediction failed.")
+
+        st.write("Error details:")
+        st.code(e)
+
+
+# -----------------------------
+# Model Information
+# -----------------------------
+
+st.divider()
+
+st.subheader("Model Information")
+
+info_col1, info_col2, info_col3 = st.columns(3)
+
+with info_col1:
     st.metric(
-        label="Predicted Sales",
-        value=f"${prediction[0]:,.2f}"
+        "Model",
+        "Random Forest"
+    )
+
+with info_col2:
+    st.metric(
+        "R² Score",
+        "98.70%"
+    )
+
+with info_col3:
+    st.metric(
+        "RMSE",
+        "29,093"
     )
