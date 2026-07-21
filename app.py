@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 import joblib
-import streamlit as st
 import base64
+import streamlit as st
 
 def add_bg(image_file):
 
@@ -13,69 +13,117 @@ def add_bg(image_file):
         f"""
         <style>
 
+        /* ===== Background ===== */
         .stApp {{
             background-image:
             linear-gradient(
-                rgba(5, 15, 30, 0.75),
-                rgba(5, 15, 30, 0.75)
+                rgba(5,15,30,0.78),
+                rgba(5,15,30,0.78)
             ),
             url("data:image/png;base64,{encoded}");
 
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             background-attachment: fixed;
         }}
 
 
-        /* Main text */
+        /* ===== Main Text ===== */
         h1, h2, h3, h4, h5, h6 {{
             color: white !important;
             text-shadow: 2px 2px 5px black;
         }}
 
-        p, label, span {{
-            color: #f8fafc !important;
+        p, label {{
+            color: white !important;
             text-shadow: 1px 1px 3px black;
         }}
 
 
-        /* Glass effect for containers */
-        div[data-testid="stVerticalBlock"] > div {{
-            background: rgba(255,255,255,0.08);
-            border-radius: 15px;
-            padding: 10px;
+        /* ===== Select Boxes ===== */
+
+        div[data-baseweb="select"] > div {{
+            background-color: rgba(255,255,255,0.15) !important;
+            border: 1px solid rgba(255,255,255,0.35) !important;
+            border-radius: 10px;
         }}
 
 
-        /* Input boxes */
-        div[data-baseweb="select"] > div,
-        input {{
-            background-color: rgba(255,255,255,0.15) !important;
+        /* Selected item text */
+        div[data-baseweb="select"] span {{
             color: white !important;
         }}
 
 
-        /* Metric cards */
+        /* Dropdown menu container */
+        ul[role="listbox"] {{
+            background-color: rgba(10,20,40,0.95) !important;
+            backdrop-filter: blur(15px);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }}
+
+
+        /* Dropdown items */
+        li[role="option"] {{
+            color: white !important;
+            background-color: transparent !important;
+        }}
+
+
+        /* Dropdown hover */
+        li[role="option"]:hover {{
+            background-color: rgba(37,99,235,0.8) !important;
+            color:white !important;
+        }}
+
+
+        /* ===== Number Inputs ===== */
+
+        div[data-baseweb="input"] {{
+            background-color: rgba(255,255,255,0.15) !important;
+            border-radius: 10px;
+            border:1px solid rgba(255,255,255,0.3);
+        }}
+
+
+        div[data-baseweb="input"] input {{
+            color:white !important;
+        }}
+
+
+        /* ===== Metric Cards ===== */
+
         div[data-testid="metric-container"] {{
             background:
             rgba(0,0,0,0.45);
 
             border-radius:15px;
             padding:15px;
-            border:1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
+
+            border:1px solid rgba(255,255,255,0.25);
+
+            backdrop-filter:blur(12px);
         }}
 
 
-        /* Buttons */
+        /* ===== Prediction Button ===== */
+
         .stButton button {{
+            width:100%;
             background:#2563eb;
             color:white;
+
+            font-size:18px;
             font-weight:bold;
+
             border-radius:12px;
             padding:12px;
+
             border:none;
         }}
+
 
         .stButton button:hover {{
             background:#1d4ed8;
@@ -83,18 +131,24 @@ def add_bg(image_file):
         }}
 
 
-        /* Sidebar */
+        /* ===== Sidebar ===== */
+
         section[data-testid="stSidebar"] {{
             background:
             rgba(0,0,0,0.65);
-            backdrop-filter: blur(15px);
+
+            backdrop-filter:blur(15px);
         }}
+
 
         </style>
         """,
         unsafe_allow_html=True
     )
-add_bg("Executive sales Dashboard.png")
+
+
+# Apply your image
+add_bg("Executive Dashboard Image.PNG")
 # -----------------------------
 # Page Configuration
 # -----------------------------
