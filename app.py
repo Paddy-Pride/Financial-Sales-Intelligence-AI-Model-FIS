@@ -277,7 +277,7 @@ with col2:
 
 st.divider()
 
-if st.button("🚀 Predict Sales"):
+if st.button(" Predict Sales"):
 
     input_data = pd.DataFrame(
         {
@@ -400,7 +400,7 @@ st.markdown(
     </style>
 
     <div class="footer">
-        Trained by <b>Pride @ Cyber_Ninja</b> 🚀
+        Trained by <b> Pride @ Cyber_Ninja</b>
     </div>
     """,
     unsafe_allow_html=True
