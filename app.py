@@ -148,7 +148,7 @@ def add_bg(image_file):
 
 
 # Apply your image
-add_bg("Executive Dashboard Image.PNG")
+add_bg("Executive sales Dashboard.png")
 # -----------------------------
 # Page Configuration
 # -----------------------------
