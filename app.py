@@ -170,8 +170,8 @@ model = load_model()
 # -----------------------------
 # Header
 # -----------------------------
-st.title("📊 Financial Sales Intelligence-AI-Model
-")
+st.title("📊 Financial Sales Forecast AI Model"
+)
 st.subheader("AI Sales Prediction System")
 
 st.write(
