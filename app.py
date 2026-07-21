@@ -3,13 +3,8 @@ import pandas as pd
 import joblib
 import streamlit as st
 import base64
-import os
 
 def add_bg(image_file):
-
-    if not os.path.exists(image_file):
-        st.error(f"Background image not found: {image_file}")
-        return
 
     with open(image_file, "rb") as image:
         encoded = base64.b64encode(image.read()).decode()
@@ -21,23 +16,84 @@ def add_bg(image_file):
         .stApp {{
             background-image:
             linear-gradient(
-                rgba(0,0,0,0.55),
-                rgba(0,0,0,0.55)
+                rgba(5, 15, 30, 0.75),
+                rgba(5, 15, 30, 0.75)
             ),
             url("data:image/png;base64,{encoded}");
 
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             background-attachment: fixed;
+        }}
+
+
+        /* Main text */
+        h1, h2, h3, h4, h5, h6 {{
+            color: white !important;
+            text-shadow: 2px 2px 5px black;
+        }}
+
+        p, label, span {{
+            color: #f8fafc !important;
+            text-shadow: 1px 1px 3px black;
+        }}
+
+
+        /* Glass effect for containers */
+        div[data-testid="stVerticalBlock"] > div {{
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 10px;
+        }}
+
+
+        /* Input boxes */
+        div[data-baseweb="select"] > div,
+        input {{
+            background-color: rgba(255,255,255,0.15) !important;
+            color: white !important;
+        }}
+
+
+        /* Metric cards */
+        div[data-testid="metric-container"] {{
+            background:
+            rgba(0,0,0,0.45);
+
+            border-radius:15px;
+            padding:15px;
+            border:1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }}
+
+
+        /* Buttons */
+        .stButton button {{
+            background:#2563eb;
+            color:white;
+            font-weight:bold;
+            border-radius:12px;
+            padding:12px;
+            border:none;
+        }}
+
+        .stButton button:hover {{
+            background:#1d4ed8;
+            color:white;
+        }}
+
+
+        /* Sidebar */
+        section[data-testid="stSidebar"] {{
+            background:
+            rgba(0,0,0,0.65);
+            backdrop-filter: blur(15px);
         }}
 
         </style>
         """,
         unsafe_allow_html=True
     )
-
-
 add_bg("Executive sales Dashboard.png")
 # -----------------------------
 # Page Configuration
